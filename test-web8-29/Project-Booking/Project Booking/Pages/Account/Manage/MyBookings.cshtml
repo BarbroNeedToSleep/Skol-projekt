@@ -1,0 +1,60 @@
+﻿@page
+@model Project_Booking.MyBookingsModel
+@{
+    ViewData["Title"] = "MyBookings";
+    ViewData["ActivePage"] = ManageNavPages.MyBookings;
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<style>
+    tr:nth-child(even) {
+        background-color: rgba(8, 153, 42, 0.3);
+    }
+
+    tr:nth-child(odd) {
+        background-color: rgba(15, 89, 25, 0.3);
+    }
+</style>
+
+<table id="table" class="table table-borderless">
+    <thead>
+        <tr id="booking-table" class="bg-transparent">
+            <th>Hotel</th>
+            <th>View</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.CurrentUser.IsAdmin)
+        {
+            @foreach (var booking in Model.Bookings)
+            {
+                <tr id="booking-list">
+                    <td class="text-white">@booking.Hotel.HotelName</td>
+                    <td><a class="text-white" asp-page="./Details" asp-route-id="@booking.ID">View</a></td>
+                    <td><a class="text-white" asp-page="./Edit" asp-route-id="@booking.ID">Edit</a></td>
+                    <td><a class="text-white" asp-page="./Delete" asp-route-id="@booking.ID">Delete</a></td>
+                </tr>
+            }
+        }
+        else
+        {
+            @foreach (var booking in Model.CurrentUser.MyBookings)
+            {
+                <tr id="booking-list">
+                    <td class="text-white">@booking.Hotel.HotelName</td>
+                    <td><a class="text-white" asp-page="./Details" asp-route-id="@booking.ID">View</a></td>
+                    <td><a class="text-white" asp-page="./Edit" asp-route-id="@booking.ID">Edit</a></td>
+                    <td><a class="text-white" asp-page="./Delete" asp-route-id="@booking.ID">Delete</a></td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
